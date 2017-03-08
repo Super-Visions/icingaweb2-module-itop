@@ -42,13 +42,29 @@ class ImportSource extends ImportSourceHook
 
 		$form->addElement('select', 'query', array(
 			'label' => $form->translate('Query'),
-			'multiOptions' => array(
+			'multiOptions' => $form->optionalEnum(array(
 				1 => 'Query 1',
 				2 => 'Query 2',
-				null => $form->translate('Custom…'),
-			),
+			), $form->translate('Custom…')),
+			'class' => 'autosubmit',
 			'required' => false,
 		));
+
+		// Add additional fields when selected custom query
+		$query = $form->getSentValue('query', $form->getValue('query'));
+		if(empty($query))
+		{
+			$form->addElement('textarea', 'expression', array(
+				'label' => $form->translate('Expression'),
+				'rows' => 10,
+				'required' => true,
+			));
+
+			$form->addElement('text', 'fields', array(
+				'label' => $form->translate('Fields'),
+				'required' => true,
+			));
+		}
 
 		$form->addElement('radio', 'no_localize', array(
 			'label' => $form->translate('Localize'),
