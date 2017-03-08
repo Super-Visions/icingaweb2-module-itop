@@ -1,0 +1,6 @@
+Module: itop
+Version: 0.0.1
+Depends: director
+Description: iTop for Icinga Director
+    The iTop module provides an Import Source for iTop Export queries.
+    You can select a OQL query from the Query Phrasebook or create a custom one.
