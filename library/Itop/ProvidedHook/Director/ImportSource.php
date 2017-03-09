@@ -50,16 +50,13 @@ class ImportSource extends ImportSourceHook
 		$resourceName = $form->getSentValue('resource', $form->getValue('resource'));
 		if(empty($resourceName)) return $form;
 
-		// TODO: Load queries from iTop
-
+		// Load and present available queries
+		$queries = Util::enumQueries($resourceName);
 		$form->addElement('select', 'query', array(
 			'label' => $form->translate('Query'),
-			'multiOptions' => $form->optionalEnum(array(
-				1 => 'Query 1',
-				2 => 'Query 2',
-			), $form->translate('Custom…')),
+			'multiOptions' => $form->optionalEnum($queries + array($form->translate('Custom…'))),
 			'class' => 'autosubmit',
-			'required' => false,
+			'required' => true,
 		));
 
 		// Add additional fields when selected custom query

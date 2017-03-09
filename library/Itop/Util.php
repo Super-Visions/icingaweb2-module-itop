@@ -16,4 +16,27 @@ class Util extends \Icinga\Module\Director\Util
 		static::addResourceFormElement($form, $name, 'iTop');
 		if($autosubmit) $form->getElement($name)->setAttrib('class', 'autosubmit');
 	}
+
+	/**
+	 * @param string $resourceName
+	 * @return array
+	 */
+	public static function enumQueries($resourceName)
+	{
+		$itop = new RestApiClient($resourceName);
+
+		$response = $itop->doRestCall('core/get', array(
+			'class' => 'QueryOQL',
+			'key' => 'SELECT QueryOQL WHERE fields != ""',
+			'output_fields' => 'name',
+		));
+
+		$queries = array();
+		foreach($response->objects as $object)
+		{
+			$queries[$object->key] = $object->fields->name;
+		}
+
+		return $queries;
+	}
 }
