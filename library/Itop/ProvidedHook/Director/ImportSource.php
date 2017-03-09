@@ -4,6 +4,7 @@ namespace Icinga\Module\Itop\ProvidedHook\Director;
 
 use Icinga\Module\Director\Hook\ImportSourceHook;
 use Icinga\Module\Director\Web\Form\QuickForm;
+use Icinga\Module\Itop\Util;
 
 class ImportSource extends ImportSourceHook
 {
@@ -43,7 +44,11 @@ class ImportSource extends ImportSourceHook
 	 */
 	public static function addSettingsFormFields(QuickForm $form)
 	{
-		// TODO: Add iTop resource element
+		Util::addItopResourceFormElement($form, 'resource', true);
+
+		// Only show rest of form if a resource has been selected
+		$resourceName = $form->getSentValue('resource', $form->getValue('resource'));
+		if(empty($resourceName)) return $form;
 
 		// TODO: Load queries from iTop
 
