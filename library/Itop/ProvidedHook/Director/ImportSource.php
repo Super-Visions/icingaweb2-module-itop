@@ -1,12 +1,19 @@
 <?php
 
-namespace Icinga\Module\iTop\ProvidedHook\Director;
+namespace Icinga\Module\Itop\ProvidedHook\Director;
 
 use Icinga\Module\Director\Hook\ImportSourceHook;
 use Icinga\Module\Director\Web\Form\QuickForm;
 
 class ImportSource extends ImportSourceHook
 {
+	/**
+	 * @return string
+	 */
+	public function getName()
+	{
+		return 'iTop Export';
+	}
 
 	/**
 	 * Returns an array containing importable objects
