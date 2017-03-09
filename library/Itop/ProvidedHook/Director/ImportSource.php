@@ -47,7 +47,7 @@ class ImportSource extends ImportSourceHook
 		Util::addItopResourceFormElement($form, 'resource', true);
 
 		// Only show rest of form if a resource has been selected
-		$resourceName = $form->getSentValue('resource', $form->getValue('resource'));
+		$resourceName = $form->getSentOrObjectSetting('resource');
 		if(empty($resourceName)) return $form;
 
 		// Load and present available queries
@@ -60,7 +60,7 @@ class ImportSource extends ImportSourceHook
 		));
 
 		// Add additional fields when selected custom query
-		$query = $form->getSentValue('query', $form->getValue('query'));
+		$query = $form->getSentOrObjectSetting('query');
 		if(empty($query))
 		{
 			$form->addElement('textarea', 'expression', array(
