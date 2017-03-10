@@ -8,6 +8,10 @@ use Icinga\Data\ResourceFactory;
 use Icinga\Exception\ConfigurationError;
 use Icinga\Exception\IcingaException as Exception;
 
+/**
+ * Class RestApiClient
+ * @package Icinga\Module\Itop
+ */
 class RestApiClient
 {
 	/**
@@ -26,7 +30,7 @@ class RestApiClient
 	 */
 	public function __construct($resourceName = null)
 	{
-		if (!empty($resourceName)) $this->setResource($resourceName);
+		if (!is_null($resourceName)) $this->setResource($resourceName);
 	}
 
 	/**
@@ -125,7 +129,7 @@ class RestApiClient
 		if (empty($operation))
 			throw new ConfigurationError('No REST operation given');
 
-		$url = $this->resource->url . '/webservices/rest.php?version=1.3';
+		$url = sprintf('%s/webservices/rest.php?version=1.3', $this->resource->url);
 
 		$headers = array(
 			'Accept: application/json',
@@ -231,9 +235,7 @@ class RestApiClient
 
 		$statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		if ($statusCode === 401) {
-			throw new ConfigurationError(
-				'Unable to authenticate, please check your API credentials'
-			);
+			throw new ConfigurationError('Unable to authenticate, please check your API credentials');
 		}
 
 		Benchmark::measure('Rest Api, got response');
