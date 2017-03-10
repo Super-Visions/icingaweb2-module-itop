@@ -45,6 +45,75 @@ class RestApiClient
 	}
 
 	/**
+	 * @param int|string $query
+	 * @param int $no_localize
+	 * @param string $fields
+	 * @return array
+	 * @throws ConfigurationError
+	 * @throws Exception
+	 */
+	public function doExport($query, $no_localize = 1, $fields = '')
+	{
+		$data = array(
+			'login_mode' => 'basic',
+			'format' => 'csv',
+			'no_localize' => $no_localize,
+		);
+
+		if (is_int($query)) $data['query'] = $query;
+		elseif (!empty($query) && !empty($fields))
+		{
+			$data['expression'] = $query;
+			$data['fields'] = $fields;
+		}
+
+		$url = sprintf('%s/webservices/export-v2.php?%s', $this->resource->url, http_build_query($data));
+
+		$headers = array(
+			'Accept: text/csv',
+		);
+
+		$response = $this->curlRequest('GET', $url, $headers);
+
+		// If it has html code, something went wrong
+		if (!strncmp($response, '<!DOCTYPE html', 14))
+		{
+			if (preg_match('#^ERROR: (.*)$#mi', strip_tags($response), $match))
+			{
+				throw new Exception($match[1]);
+			}
+
+			// Unknown reason
+			throw new ConfigurationError('Response contains HTML code instead of CSV');
+		}
+
+		// process the data
+		$export = $fields = array();
+		$tempFile = new \SplTempFileObject();
+		$tempFile->fwrite($response);
+		$tempFile->setFlags(\SplFileObject::READ_CSV);
+		$tempFile->setCsvControl(',','"','"');
+
+		foreach ($tempFile as $key => $row)
+		{
+			if ($key == 0)
+			{
+				$fields = $row;
+			}
+			elseif (count($fields) == count($row))
+			{
+				$export[] = (object) array_combine($fields, $row);
+			}
+			else
+			{
+				throw new Exception('Column count in row %d does not match columns in header row', $key);
+			}
+		}
+
+		return $export;
+	}
+
+	/**
 	 * @param $operation
 	 * @param array $data
 	 * @return mixed
