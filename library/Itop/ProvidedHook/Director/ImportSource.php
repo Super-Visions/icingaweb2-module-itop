@@ -4,10 +4,16 @@ namespace Icinga\Module\Itop\ProvidedHook\Director;
 
 use Icinga\Module\Director\Hook\ImportSourceHook;
 use Icinga\Module\Director\Web\Form\QuickForm;
+use Icinga\Module\Itop\RestApiClient;
 use Icinga\Module\Itop\Util;
 
 class ImportSource extends ImportSourceHook
 {
+	/**
+	 * @var array
+	 */
+	protected $cachedData = array();
+
 	/**
 	 * @return string
 	 */
@@ -23,7 +29,18 @@ class ImportSource extends ImportSourceHook
 	 */
 	public function fetchData()
 	{
-		// TODO: Implement fetchData() method.
+		if (empty($this->cachedData))
+		{
+			$itop = new RestApiClient($this->getSetting('resource'));
+
+			$query = (int) $this->getSetting('query');
+			$no_localize = (int) $this->getSetting('no_localize');
+
+			if ($query > 0) $this->cachedData = $itop->doExport($query, $no_localize);
+			else $this->cachedData = $itop->doExport($this->getSetting('expression'), $no_localize, $this->getSetting('fields'));
+		}
+
+		return $this->cachedData;
 	}
 
 	/**
@@ -33,7 +50,7 @@ class ImportSource extends ImportSourceHook
 	 */
 	public function listColumns()
 	{
-		// TODO: Implement listColumns() method.
+		return array_keys((array) current($this->fetchData()));
 	}
 
 	/**
