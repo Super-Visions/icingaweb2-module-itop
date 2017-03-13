@@ -74,21 +74,24 @@ class ImportSource extends ImportSourceHook
 			'multiOptions' => $form->optionalEnum($queries + array($form->translate('Custom…'))),
 			'class' => 'autosubmit',
 			'required' => true,
+			'description' => $form->translate('Choose a query from your iTop Query phrasebook, select "Custom…" if you want to craft a custom OQL query.'),
 		));
 
 		// Add additional fields when selected custom query
 		$query = $form->getSentOrObjectSetting('query');
-		if(empty($query))
+		if (empty($query))
 		{
 			$form->addElement('textarea', 'expression', array(
 				'label' => $form->translate('Expression'),
 				'rows' => 10,
 				'required' => true,
+				'description' => $form->translate('OQL query to run, see the OQL Reference in the iTop documentation on what the correct syntax is.'),
 			));
 
 			$form->addElement('text', 'fields', array(
 				'label' => $form->translate('Fields'),
 				'required' => true,
+				'description' => $form->translate('Coma separated list of attributes (or alias.attribute) to export.'),
 			));
 		}
 
@@ -96,6 +99,7 @@ class ImportSource extends ImportSourceHook
 			'label' => $form->translate('Localize'),
 			'multiOptions' => array($form->translate('Yes'), $form->translate('No')),
 			'required' => true,
+			'description' => $form->translate('Localize the values (for Enumerated fields) and the field names.'),
 		));
 
 		return $form;
