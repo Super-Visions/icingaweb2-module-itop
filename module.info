@@ -1,5 +1,5 @@
 Module: itop
-Version: 0.0.1
+Version: 0.1.0
 Depends: director
 Description: iTop for Icinga Director
     The iTop module provides an Import Source for iTop Export queries.
