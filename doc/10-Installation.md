@@ -23,4 +23,4 @@ Otherwise you could also do so on CLI by running:
 icingacli module enable itop
 ```
 
-That's all, now you are ready to define your first [Import Source](20-ImportSource.md) definitions!
+That's all, now you are ready to define your first [Import Source](20-Import-source.md) definitions!
