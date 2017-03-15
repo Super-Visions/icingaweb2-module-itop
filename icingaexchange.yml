@@ -1,0 +1,18 @@
+name: iTop
+description: "file:///README.md"
+url: "https://github.com/Super-Visions/icingaweb2-module-itop"
+tags: iTop, CMDB, automation
+vendor: Super-Visions
+target: Icinga Web 2
+type: Module
+license: gplv3
+releases:
+  -
+    name: v0.1.0
+    description: "Initial release"
+    files:
+      -
+        name: icingaweb2-module-itop.tar.gz
+        url: "https://github.com/Super-Visions/icingaweb2-module-itop/archive/v0.1.0.tar.gz"
+        description: Module for Icinga Web 2
+        checksum: 7c29091386096723da427f9b30c49fab
