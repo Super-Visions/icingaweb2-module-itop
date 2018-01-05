@@ -15,7 +15,7 @@ class Util extends \Icinga\Module\Director\Util
 	{
 		static::addResourceFormElement($form, $name, 'iTop');
 		if($autosubmit) $form->getElement($name)->setAttrib('class', 'autosubmit');
-		$form->getElement($name)->setDescription($form->translate('Select which iTop instance to connect to. The content of this list depends on you configuration in "resources.ini"'));
+		$form->getElement($name)->setDescription($form->translate('Select which iTop instance to connect to. The content of this list depends on your configuration in "resources.ini"'));
 	}
 
 	/**
