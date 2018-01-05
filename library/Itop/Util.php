@@ -31,6 +31,8 @@ class Util extends \Icinga\Module\Director\Util
 			'key' => 'SELECT QueryOQL WHERE fields != ""',
 			'output_fields' => 'name',
 		));
+		
+		if(!isset($response->objects)) return array();
 
 		$queries = array();
 		foreach($response->objects as $object)

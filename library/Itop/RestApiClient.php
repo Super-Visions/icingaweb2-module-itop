@@ -95,7 +95,7 @@ class RestApiClient
 		$export = $fields = array();
 		$tempFile = new \SplTempFileObject();
 		$tempFile->fwrite($response);
-		$tempFile->setFlags(\SplFileObject::READ_CSV);
+		$tempFile->setFlags(\SplFileObject::READ_CSV | \SplFileObject::READ_AHEAD | \SplFileObject::SKIP_EMPTY | \SplFileObject::DROP_NEW_LINE);
 		$tempFile->setCsvControl(',','"','"');
 
 		foreach ($tempFile as $key => $row)
@@ -164,7 +164,7 @@ class RestApiClient
 			throw new Exception('Parsing JSON result failed: ' . $message);
 		}
 
-		if ($response->code != 0)
+		if (!isset($response->code) or $response->code != 0)
 		{
 			throw new Exception($response->message);
 		}
